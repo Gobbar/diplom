@@ -1,0 +1,4 @@
+model.zip
+model/*
+__pycache__/*
+.app.py.swp
