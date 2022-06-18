@@ -40,6 +40,8 @@ def get_mask(img, mask):
 def count_value(mask, stack_mask, def_size):
 	width, height = mask.shape
 	count_log, count_stack = 0, 0
+	print("aaa: ", mask.shape)
+	print("bbb: ", stack_mask.shape)
 	for i in range(width):
 		for j in range(height):
 			count_log += int(mask[i, j] == 255)
@@ -47,12 +49,10 @@ def count_value(mask, stack_mask, def_size):
 	coeff = count_log / count_stack #Коэффициент полнодревесности
 	cnt, h = cv2.findContours(mask, 2, 1)
 	log_count = len(cnt) #Количество бревен
-	mul_world = 25 #Длина эталона в пикселях
-	mul_size = def_size[0] * def_size[1] / 256**2
+	mul_world = 91 * def_size[0] / 256 #Длина эталона в пикселях
+	mul_size = def_size[0] * def_size[1] / (256**2)
 	average_len = 6
 	value = average_len * count_log * mul_size * (1 / (mul_world**2))
-	print(count_log)
-	print(def_size)
 	return {"coeff": coeff, "log_count": log_count, "value": value }
 
 
