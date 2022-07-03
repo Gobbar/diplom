@@ -74,13 +74,14 @@ def send_img():
     #print(request.data)
     data = json.loads(request.data) 
     img = base64_to_cv2image(data["image"], data["extension"])
+    log_len = data["log_len"]
     def_size = img.shape
     mask = recognize_logs(img)
     img = cv2.resize(img, (256, 256))
     ext = '.png'
     res = recognize.get_mask(img, mask)
     blob = cv2image_to_base64(res['img_with_mask'], ext)
-    res = recognize.count_value(mask, res['stack_mask'], def_size)
+    res = recognize.count_value(mask, res['stack_mask'], def_size, log_len)
 
     return json.dumps({
     	'image': blob, 

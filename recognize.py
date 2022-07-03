@@ -37,7 +37,7 @@ def get_mask(img, mask):
 	img_with_mask = cv2.addWeighted(img, alpha, cv2.cvtColor(mask_copy, cv2.COLOR_GRAY2RGB), beta, gamma)
 	return {"img_with_mask": img_with_mask, "stack_mask": mask_copy}
 
-def count_value(mask, stack_mask, def_size):
+def count_value(mask, stack_mask, def_size, log_len):
 	width, height = mask.shape
 	count_log, count_stack = 0, 0
 	print("aaa: ", mask.shape)
@@ -51,7 +51,20 @@ def count_value(mask, stack_mask, def_size):
 	log_count = len(cnt) #Количество бревен
 	mul_world = 91 * def_size[0] / 256 #Длина эталона в пикселях
 	mul_size = def_size[0] * def_size[1] / (256**2)
-	average_len = 6
+	average_len = 6 if log_len is None else log_len
+
+
+	mul_world = (190 * 532 * 1242 * count_stack * mul_size) / (485425.43 * def_size[0] * def_size[1])
+	print("size: ", def_size)
+	print("mul_world: ", mul_world)
+	print("count_stack: ", count_stack)
+	print("mul_size: ", mul_size)
+	print("count_log: ", count_log)
+
+	#(count_stack * mul_size * 190 * 532 * 1242 / (def_size[0] * def_size[1] * 286651.424)) = x  
+
+
+
 	value = average_len * count_log * mul_size * (1 / (mul_world**2))
 	return {"coeff": coeff, "log_count": log_count, "value": value }
 
